@@ -59,11 +59,16 @@ class DeleteStudent(Toplevel):
                     cur.execute("DELETE FROM students WHERE student_id=?", (var_deleteStudentID,))
                     main.db.conn.commit()
                     messagebox.showinfo("Success", 'Student has been delete successfully', icon='info')
+                    DeleteStudent.destroy(self)
                 elif var_deleteStudentID != "" and (check_student_list[0][0] and check_student_issued[0][0]) != 0:
                     messagebox.showerror("UnSuccess", "Student have some books", icon='warning')
+                    DeleteStudent.destroy(self)
                 elif (check_student_list[0][0] and check_student_issued[0][0]) == 0 and var_deleteStudentID != "":
                     messagebox.showerror("UnSuccess", "Student not present", icon='warning')
+                    DeleteStudent.destroy(self)
                 else:
                     messagebox.showerror("Error", 'All fields are mandatory', icon='warning')
+                    DeleteStudent.destroy(self)
             else:
                 print('Error : check_student_list = None')
+                DeleteStudent.destroy(self)

@@ -68,7 +68,10 @@ class AddStudent(Toplevel):
                 cur.execute(query, (stName, stPhone, stGuardianName, stID))
                 db.conn.commit()
                 messagebox.showinfo("success", "student has been add successfully", icon='info')
+                AddStudent.destroy(self)
             except:
                 messagebox.showerror("Error", "Transaction not commit", icon='warning')
+                AddStudent.destroy(self)
         else:
             messagebox.showerror("Error", "All fields are mandatory", icon='warning')
+            AddStudent.destroy(self)

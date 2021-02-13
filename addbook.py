@@ -74,7 +74,10 @@ class AddBook(Toplevel):
                 cur.execute(query, (bkName, bkAuthor, bkCategory, bkID))
                 main.db.conn.commit()
                 messagebox.showinfo("success", "Book has been add successfully", icon='info')
+                AddBook.destroy(self)
             except:
                 messagebox.showerror("Error", "Transaction not commit", icon='warning')
+                AddBook.destroy(self)
         else:
             messagebox.showerror("Error", "All fields are mandatory", icon='warning')
+            AddBook.destroy(self)

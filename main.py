@@ -147,6 +147,7 @@ class MainWindow(object):
         cur = db.conn.cursor()
         if self.studentSearchChoice[0] == self.combo_student_search_choice.get():
             self.student_managementBox.delete(0, END)
+            self.student_managementBox_detail.delete(0, END)
             print("ALL student")
             students = cur.execute("SELECT * FROM students").fetchall()
             counter = 0
@@ -157,6 +158,7 @@ class MainWindow(object):
                 counter += 1
         elif self.studentSearchChoice[1] == self.combo_student_search_choice.get():
             self.student_managementBox.delete(0, END)
+            self.student_managementBox_detail.delete(0, END)
             print("Issued student")
             students = cur.execute("SELECT * FROM issued").fetchall()
             counter = 0
@@ -172,6 +174,7 @@ class MainWindow(object):
                 counter += 1
         else:
             self.student_managementBox.delete(0, END)
+            self.student_managementBox_detail.delete(0, END)
             print("not issued student")
             students = cur.execute(
                 "SELECT * FROM students WHERE student_id NOT IN (SELECT student_id FROM issued)").fetchall()

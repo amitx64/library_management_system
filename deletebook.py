@@ -59,11 +59,16 @@ class DeleteBook(Toplevel):
                     cur.execute("DELETE FROM books WHERE book_id=?", (var_deleteBookID,))
                     main.db.conn.commit()
                     messagebox.showinfo("Success", 'Book has been delete successfully', icon='info')
+                    DeleteBook.destroy(self)
                 elif var_deleteBookID != "" and (check_book_library[0][0] and check_book_issued[0][0]) != 0:
                     messagebox.showerror("UnSuccess", 'Book has been issued to someone', icon='info')
+                    DeleteBook.destroy(self)
                 elif var_deleteBookID != "" and (check_book_library[0][0] and  check_book_issued[0][0]) == 0:
                     messagebox.showerror("UnSuccess", "Book not present", icon='warning')
+                    DeleteBook.destroy(self)
                 else:
                     messagebox.showerror("Error", 'All fields are mandatory', icon='warning')
+                    DeleteBook.destroy(self)
             else:
                 print('Error : check_book_library = None')
+                DeleteBook.destroy(self)

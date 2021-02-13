@@ -55,9 +55,13 @@ class ReturnBook(Toplevel):
                     cur.execute("DELETE FROM issued WHERE book_id=?", (ret_book_ID,))
                     main.db.conn.commit()
                     messagebox.showinfo("Success", 'Book has been returned successfully', icon='info')
+                    ReturnBook.destroy(self)
                 elif ret_query[0][0] == 0 and ret_book_ID != "":
                     messagebox.showinfo("UnSuccess", 'Entered Book ID is not present', icon='info')
+                    ReturnBook.destroy(self)
                 else:
                     messagebox.showerror("Error", 'All fields are mandatory', icon='warning')
+                    ReturnBook.destroy(self)
             else:
                 print('return query : None')
+                ReturnBook.destroy(self)

@@ -50,24 +50,34 @@ class IssueBook(Toplevel):
         print(stID)
         check_issued = None
         check_books = None
+        check_student = None
         cur = main.db.conn.cursor()
         try:
             check_issued = cur.execute("SELECT count(*) FROM issued WHERE book_id=?", (bkID,)).fetchall()
             check_books = cur.execute("SELECT count(*) FROM books WHERE book_id=?", (bkID,)).fetchall()
+            check_student = cur.execute("SELECT count(*) FROM students WHERE student_id=?", (stID,)).fetchall()
         except Exception as e:
             print(e)
         finally:
             if check_issued and check_books != None:
-                if bkID and stID != "" and check_issued[0][0] == 0 and check_books[0][0] != 0:
+                if bkID and stID != "" and check_issued[0][0] == 0 and check_books[0][0] != 0 and check_student[0][0] != 0:
                     query = "INSERT INTO issued(book_id,student_id)VALUES(?,?)"
                     cur.execute(query, (bkID, stID))
                     main.db.conn.commit()
                     messagebox.showinfo("Success", 'Book has been issued successfully', icon='info')
-                elif bkID and stID != "" and check_issued[0][0] and check_books[0][0] != 0:
+                    IssueBook.destroy(self)
+                elif bkID and stID != "" and check_issued[0][0] and check_books[0][0] != 0 and check_student[0][0] != 0:
                     messagebox.showerror("Error", 'Book has already been issued', icon='warning')
-                elif bkID and stID != "" and check_issued[0][0] == 0 and check_books[0][0] == 0:
+                    IssueBook.destroy(self)
+                elif bkID and stID != "" and check_issued[0][0] == 0 and check_books[0][0] == 0 and check_student[0][0] != 0:
                     messagebox.showerror("Error", 'Entered book id not present', icon='warning')
+                    IssueBook.destroy(self)
+                elif bkID and stID != "" and check_student[0][0] == 0:
+                    messagebox.showerror("Error", 'Student does not exist', icon='warning')
+                    IssueBook.destroy(self)
                 else:
                     messagebox.showerror("Error", "All fields are mandatory", icon='warning')
+                    IssueBook.destroy(self)
             else:
                 print('Check_issued : None , Check_books : None')
+                IssueBook.destroy(self)
